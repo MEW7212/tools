@@ -36,6 +36,8 @@ public class Utility {
                 bufferedWriter.newLine();
             }
             bufferedWriter.flush();
+        }catch (Exception e){
+            log.info("writeStringListToFile error : ", e);
         }
     }
 

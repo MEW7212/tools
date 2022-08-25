@@ -37,6 +37,9 @@ public class ScheduledTask {
     SpectrumCloseTasks spectrumCloseTasks;
 
     @Autowired
+    AddDsmPositionTask addDsmPositionTask;
+
+    @Autowired
     Utility utility;
 
     private final static String Key_Point = "20120486213896";
@@ -45,10 +48,6 @@ public class ScheduledTask {
     @Scheduled(initialDelay = 1000, fixedRate = 3153600000000L)
     //@Scheduled(cron = "0/10 * * * * ?")
     public void tools() throws IOException, ParseException {
-        //genL2DataTasks.run();
-        //getNewBCTNumberFromNASTasks.run(); // 要先進去 method 做設定
-        //spectrumCloseTasks.run();
-        modifyAndRewriteExcelTasks.run();
-
+        addDsmPositionTask.run();
     }
 }
