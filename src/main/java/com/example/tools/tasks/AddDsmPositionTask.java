@@ -27,7 +27,10 @@ public class AddDsmPositionTask {
     @Value("${dsm.excel.path}")
     private String excelPath;
 
-    private Map<String, String> districtMap = new HashMap<String, String>() {
+    @Value("${dsm.excel.page}")
+    private int page;
+
+    private static Map<String, String> districtMap = new HashMap<String, String>() {
         {
             put("東區", "0D51");
             put("西區", "0D52");
@@ -40,7 +43,7 @@ public class AddDsmPositionTask {
     public void run() throws IOException {
         List<DsmInfo> dsmInfoList = new ArrayList<>();
         XSSFWorkbook wb = new XSSFWorkbook(excelPath);
-        Sheet sheet = wb.getSheetAt(0);
+        Sheet sheet = wb.getSheetAt(page - 1); // 因為活頁簿是從 0 開始
 
         int rowLen = sheet.getPhysicalNumberOfRows();
         log.info("Insert position into DB numbers : {}", rowLen - 1);
@@ -76,7 +79,8 @@ public class AddDsmPositionTask {
 
         for (DsmInfo dsmInfo : dsmInfoList) {
             dsmInsertService.insert(dsmInfo);
-            log.info("NO.{} insert ok.", dsmInfo.getNo());
+
+            // TODO 還要寫入 155、238
         }
 
         wb.close();
