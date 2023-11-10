@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,7 +30,13 @@ public class Utility {
     }
 
     public void writeStringListToFile(List<String> list, String filePath) throws IOException {
-        FileWriter fileWriter = new FileWriter(filePath);
+        File savingFile = new File(filePath);
+        savingFile.setExecutable(true, false);
+        savingFile.setReadable(true, false);
+        savingFile.setWritable(true, false);
+        savingFile.getParentFile().mkdirs();
+        savingFile.createNewFile();
+        FileWriter fileWriter = new FileWriter(savingFile);
         try (BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
 
             for (String ele : list) {
@@ -89,5 +97,50 @@ public class Utility {
             bytes[i / 2] = (byte) Integer.parseInt(hex.substring(i, i + 2), 16);
         }
         return bytes;
+    }
+
+    public void calculateMinuteDiff() throws ParseException {
+        SimpleDateFormat dfs = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        java.util.Date begin=dfs.parse("2004-03-06 13:30:24");
+        java.util.Date end = dfs.parse("2004-03-26 13:34:40");
+        long between=(end.getTime()-begin.getTime())/1000;//除以1000是為了轉換成秒
+        long minute1=between%3600/60;
+        log.info(minute1);
+    }
+
+
+    public static class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+      ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+    }
+
+    public static void main(String[] args) {
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+
+
+        ListNode newHead = null;
+        while (head != null) {
+            ListNode next = head.next;
+
+
+
+            head.next = newHead;
+
+
+
+            newHead = head;
+
+
+
+            head = next;
+
+
+        }
+        log.info(newHead);
     }
 }

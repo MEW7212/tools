@@ -15,13 +15,13 @@ public class GenL2DataTasks {
     Utility utility;
 
     public void run() {
-        getL2DataSqnc1();
+        //getL2DataSqnc1();
         //getL2DataSqnc2();
         // 在使用DSM時要注意CSV的欄位在第幾個
         //DSMgetL2DataSqncE();
         //DSMgetL2DataSqncA();
         //DSMgetL2DataSqncB();
-        //DSMgetL2DataSqnc7();
+        DSMgetL2DataSqnc7();
     }
 
     private void getL2DataSqnc1() {
@@ -157,8 +157,8 @@ public class GenL2DataTasks {
 
     private void DSMgetL2DataSqncE() {
         try {
-            String filename = "D:\\job\\excel手動補\\0302-DSM-陽明-至善路55號對面110218002179\\陽明-至善路55號對面110218002179-sqncE.csv";
-            String outputFilename = "D:\\job\\excel手動補\\0302-DSM-陽明-至善路55號對面110218002179\\陽明-至善路55號對面110218002179-sqncE.sql";
+            String filename = "D:\\job\\dsm-宗蔚哥社中街做資料提供給中興分析\\110218002179-e.csv";
+            String outputFilename = "D:\\job\\dsm-宗蔚哥社中街做資料提供給中興分析\\110218002179-e.sql";
             List<List<String>> spotInfos = utility.readCsv(filename);
 
             //String sqlStatement = "insert into mtrread_l2 (interface_id,sqnc,rcvtime,value_i,interface_type," +
@@ -180,7 +180,7 @@ public class GenL2DataTasks {
             String trnFail = spotInfos.get(0).get(17);
             String trnOntime = spotInfos.get(0).get(18);
             String runTime = spotInfos.get(0).get(19);
-            log.info(interfaceId);
+            log.info(interfaceId + " sqnc=e");
             String sqnc = "e";
             String interfaceType = "GTI";
             String signalType = "4";
@@ -225,9 +225,8 @@ public class GenL2DataTasks {
 
     private void DSMgetL2DataSqncA() {
         try {
-            String filename = "D:\\job\\excel手動補\\0302-DSM-陽明-至善路55號對面110218002179\\陽明-至善路55號對面110218002179-sqncA.csv";
-            String outputFilename = "D:\\job\\excel手動補\\0302-DSM-陽明-至善路55號對面110218002179\\陽明-至善路55號對面110218002179" +
-                    "-sqncA.sql";
+            String filename = "D:\\job\\dsm-宗蔚哥社中街做資料提供給中興分析\\110218002179-a.csv";
+            String outputFilename = "D:\\job\\dsm-宗蔚哥社中街做資料提供給中興分析\\110218002179-a.sql";
             List<List<String>> spotInfos = utility.readCsv(filename);
 
             //String sqlStatement = "insert into mtrread_l2 (interface_id,sqnc,rcvtime,value_i,interface_type," +
@@ -297,9 +296,8 @@ public class GenL2DataTasks {
 
     private void DSMgetL2DataSqncB() {
         try {
-            String filename = "D:\\job\\excel手動補\\0302-DSM-陽明-至善路55號對面110218002179\\陽明-至善路55號對面110218002179-sqncB.csv";
-            String outputFilename = "D:\\job\\excel手動補\\0302-DSM-陽明-至善路55號對面110218002179\\陽明-至善路55號對面110218002179" +
-                    "-sqncB.sql";
+            String filename = "D:\\job\\dsm-宗蔚哥社中街做資料提供給中興分析\\110218002179-b.csv";
+            String outputFilename = "D:\\job\\dsm-宗蔚哥社中街做資料提供給中興分析\\110218002179-b.sql";
             List<List<String>> spotInfos = utility.readCsv(filename);
 
             //String sqlStatement = "insert into mtrread_l2 (interface_id,sqnc,rcvtime,value_i,interface_type," +
@@ -328,13 +326,13 @@ public class GenL2DataTasks {
             String signalType = "g";
             String isPast = "0";
             String interfaceVer = "6";
-            String valueI = "0";
+            // String valueI = "0";
             // 電壓也要改正確的
             String volt = "3.61";
             for (int i = 1; i < spotInfos.size(); i++) {
                 String rcvtime = spotInfos.get(i).get(1);
                 String valueC = spotInfos.get(i).get(2);
-
+                String valueI = spotInfos.get(i).get(3);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("'"+interfaceId+"',");
@@ -370,9 +368,8 @@ public class GenL2DataTasks {
 
     private void DSMgetL2DataSqnc7() {
         try {
-            String filename = "D:\\job\\excel手動補\\0302-DSM-陽明-至善路55號對面110218002179\\陽明-至善路55號對面110218002179-sqnc7.csv";
-            String outputFilename = "D:\\job\\excel手動補\\0302-DSM-陽明-至善路55號對面110218002179\\陽明-至善路55號對面110218002179" +
-                    "-sqnc7.sql";
+            String filename = "D:\\job\\dsm-宗蔚哥社中街做資料提供給中興分析\\110218002179-7.csv";
+            String outputFilename = "D:\\job\\dsm-宗蔚哥社中街做資料提供給中興分析\\110218002179-7.sql";
             List<List<String>> spotInfos = utility.readCsv(filename);
 
             //String sqlStatement = "insert into mtrread_l2 (interface_id,sqnc,rcvtime,value_i,interface_type," +
@@ -382,7 +379,7 @@ public class GenL2DataTasks {
                     "sgnl_type," +
                     "is_past,bat_volt,interface_ver,trn_amt,trn_suc,trn_fail,trn_ontime,run_time) values (";
             List<String> list = new ArrayList<>();
-            String interfaceId = spotInfos.get(0).get(4);
+            String interfaceId = spotInfos.get(0).get(0);
             //String lDay = spotInfos.get(0).get(13);
             //String nDay = spotInfos.get(0).get(14);
             //String oDay = spotInfos.get(0).get(15);
@@ -390,11 +387,11 @@ public class GenL2DataTasks {
             //String hDay = spotInfos.get(0).get(17);
             //String bDay = spotInfos.get(0).get(18);
             //String openAmt = spotInfos.get(0).get(19);
-            String trnAmt = spotInfos.get(0).get(19);
-            String trnSuc = spotInfos.get(0).get(20);
-            String trnFail = spotInfos.get(0).get(21);
-            String trnOntime = spotInfos.get(0).get(22);
-            String runTime = spotInfos.get(0).get(23);
+            String trnAmt = spotInfos.get(0).get(15);
+            String trnSuc = spotInfos.get(0).get(16);
+            String trnFail = spotInfos.get(0).get(17);
+            String trnOntime = spotInfos.get(0).get(18);
+            String runTime = spotInfos.get(0).get(19);
             log.info(interfaceId);
             String sqnc = "7";
             String interfaceType = "GTI";
@@ -405,9 +402,9 @@ public class GenL2DataTasks {
             // 電壓也要改正確的
             String volt = "3.61";
             for (int i = 1; i < spotInfos.size(); i++) {
-                String rcvtime = spotInfos.get(i).get(5);
-                String valueC = spotInfos.get(i).get(6);
-                String valueI = spotInfos.get(i).get(7);
+                String rcvtime = spotInfos.get(i).get(1);
+                String valueC = spotInfos.get(i).get(2);
+                String valueI = spotInfos.get(i).get(3);
 
                 StringBuilder sb = new StringBuilder();
                 sb.append("'"+interfaceId+"',");

@@ -1,6 +1,7 @@
 package com.example.tools.tasks;
 
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -27,7 +28,8 @@ enum Action{
 @Log4j2
 @Component
 public class WindowsServiceTasks {
-    String windowsService = "MySQL,MySQL,MySQL,MySQL";
+    @Value("${windows.service}")
+    private String windowsService;
 
     // @Scheduled(initialDelay = 1 * 1000, fixedDelay = 30 * 60 * 1000) //1s, then 30min
     public void run() throws IOException {
@@ -35,6 +37,7 @@ public class WindowsServiceTasks {
         ArrayList arrayList = afterWindowsService(serviceName);
 
         for (Object arr: arrayList){
+            log.info("check service: {}", arr);
             Process p = Runtime.getRuntime().exec("sc query "+ arr);
             BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line = reader.readLine();
@@ -46,6 +49,7 @@ public class WindowsServiceTasks {
                     if (state.equals(Action.Stopped.getStopped())){
                         log.info("{} stopped", arr);
                         Process process = Runtime.getRuntime().exec("sc start "+ arr); //when stop, then restart
+                        log.info(">>>> {} restart", arr);
                     }
                     if (state.equals(Action.Starting.getStarting())){
                         log.info("{} starting", arr);
