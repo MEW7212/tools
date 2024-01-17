@@ -49,3 +49,7 @@
     - 檢查服務運行狀況，如果是 stop 就 restart
 - 1.1.9
     - 檢查 XML 錯誤
+- 1.2.0
+    - 更換 interface_id 使用 sql 抓取有這個欄位的所有表
+- 1.2.1
+    - mango db 砍 collection

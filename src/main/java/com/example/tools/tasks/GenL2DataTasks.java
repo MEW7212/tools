@@ -18,10 +18,10 @@ public class GenL2DataTasks {
         //getL2DataSqnc1();
         //getL2DataSqnc2();
         // 在使用DSM時要注意CSV的欄位在第幾個
-        //DSMgetL2DataSqncE();
+        DSMgetL2DataSqncE();
         //DSMgetL2DataSqncA();
         //DSMgetL2DataSqncB();
-        DSMgetL2DataSqnc7();
+        //DSMgetL2DataSqnc7();
     }
 
     private void getL2DataSqnc1() {

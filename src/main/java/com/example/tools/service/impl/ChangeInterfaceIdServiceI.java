@@ -4,12 +4,41 @@ import com.example.tools.repository.ChangeInterfaceIdRepository;
 import com.example.tools.service.ChangeInterfaceIdService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @Log4j2
 public class ChangeInterfaceIdServiceI implements ChangeInterfaceIdService {
+
+    @Autowired
+    ChangeInterfaceIdRepository changeInterfaceIdRepository;
+
+    @Override
+    public List<String> getAllTablesWithInterfaceId() {
+        try {
+            return changeInterfaceIdRepository.getAllTablesWithInterfaceId();
+        } catch (Exception e) {
+            log.error("TwdumServiceI getAllTablesWithInterfaceId error: ", e);
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public void updateTables(String table, String oldInterfaceId, String newInterfaceId) {
+        try {
+            int effects = changeInterfaceIdRepository.updateTables(table, oldInterfaceId, newInterfaceId);
+            log.info("table: {} update old interface_id: {} to new: {} successfully, effect lines: {}",
+                    table, oldInterfaceId, newInterfaceId, effects);
+        }catch (Exception e) {
+            log.error("TwdumServiceI updateTables error: ", e);
+        }
+    }
+
+    /**
+     *
     @Value("${is.setting}")
     boolean isSetting;
     @Value("${is.l3}")
@@ -117,4 +146,5 @@ public class ChangeInterfaceIdServiceI implements ChangeInterfaceIdService {
             }
         }
     }
+     */
 }

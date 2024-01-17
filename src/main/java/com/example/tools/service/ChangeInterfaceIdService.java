@@ -1,5 +1,9 @@
 package com.example.tools.service;
 
+import java.util.List;
+
 public interface ChangeInterfaceIdService {
-    void changeInterfaceIdToWaterId(String interfaceId, String waterId);
+    List<String> getAllTablesWithInterfaceId();
+
+    void updateTables(String table, String oldInterfaceId, String newInterfaceId);
 }

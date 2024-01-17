@@ -2,6 +2,7 @@ package com.example.tools.schedule;
 
 import com.example.tools.tasks.CompressAndDeleteJsonFilesTask;
 import com.example.tools.tasks.GenL2DataTasks;
+import com.example.tools.tasks.MangoDBTask;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -35,6 +36,9 @@ public class ScheduledTask {
 
     @Autowired CompressAndDeleteJsonFilesTask compressAndDeleteJsonFilesTask;
 
+    @Autowired
+    MangoDBTask mangoDBTask;
+
     //private final static String Key_Point = "20120486213896";
     //public final static String KEY_FORMAT = "%s_%d_%02d_%02d";
     //private static final String DATE_FORMAT ="yyyy/MM/dd HH:mm:ss";
@@ -48,6 +52,7 @@ public class ScheduledTask {
         //addDsmPositionTask.run();
         // sendUdpPacketTask.run();
         //compressAndDeleteJsonFilesTask.run();
-        genL2DataTasks.run();
+        // genL2DataTasks.run();
+        mangoDBTask.run();
     }
 }
