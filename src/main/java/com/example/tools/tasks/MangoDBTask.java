@@ -32,7 +32,8 @@ public class MangoDBTask {
             MongoDatabase db = mongoClient.getDatabase(dbName);
 
             // List of tables to keep
-            List<String> tablesToKeep = Arrays.asList("account", "deployment", "deployment_copy1", "firmware_upgrade", "neon", "teletext");
+            List<String> tablesToKeep = Arrays.asList("account", "deployment", "deployment_copy1", "shipping-pallet",
+                    "install_insta-polling", "firmware_upgrade", "neon", "teletext");
 
             // Get all table names
             List<String> allTables = db.listCollectionNames().into(new ArrayList<>());

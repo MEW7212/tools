@@ -67,9 +67,11 @@ public class AddDsmPositionTask {
             row.getCell(9).setCellType(CellType.STRING);
             obj.setInterfaceId(row.getCell(9).getStringCellValue());
 
-            if (row.getCell(11).getStringCellValue() != null) {
+            if (row.getCell(11) == null) {
+                obj.setSim(null);
+            } else if (row.getCell(11).getStringCellValue() != null) {
                 obj.setSim(row.getCell(11).getStringCellValue());
-            }else {
+            } else {
                 obj.setSim(null);
             }
             obj.setLng(BigDecimal.valueOf(row.getCell(12).getNumericCellValue()));

@@ -53,3 +53,7 @@
     - 更換 interface_id 使用 sql 抓取有這個欄位的所有表
 - 1.2.1
     - mango db 砍 collection
+- 1.2.2
+    - 通訊線撈資料
+    - jet stream 自動重連
+    - 送 UDP 封包
