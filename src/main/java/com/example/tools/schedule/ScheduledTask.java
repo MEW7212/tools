@@ -1,6 +1,6 @@
 package com.example.tools.schedule;
 
-import com.example.tools.tasks.*;
+import com.example.tools.tasks.ImportFot2MetersTask;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -27,7 +27,7 @@ public class ScheduledTask {
 
     //@Autowired Add1800BigUsersWaterNumTask add1800BigUsersWaterNumTask;
 
-    @Autowired SendUdpPacketTask sendUdpPacketTask;
+    //@Autowired SendUdpPacketTask sendUdpPacketTask;
 
     //@Autowired GenL2DataTasks genL2DataTasks;
 
@@ -44,18 +44,20 @@ public class ScheduledTask {
     // @Autowired ChangeInterfaceIdToWaterIdTask changeInterfaceIdToWaterIdTask;
     //@Autowired CommunicationCablesImproveTask communicationCablesImproveTask;
 
+    @Autowired
+    ImportFot2MetersTask importFot2MetersTask;
 
-
-    @Scheduled(initialDelay = 1000, fixedRate = 1000)
+    @Scheduled(initialDelay = 1000, fixedRate = 3153600000000L)
     //@Scheduled(cron = "0 0 * * * ?")
     public void tools() throws Exception {
         //changeInterfaceIdToWaterIdTask.run();
         //ddDsmPositionTask.run();
-        sendUdpPacketTask.run();
+        //sendUdpPacketTask.run();
         //compressAndDeleteJsonFilesTask.run();
         // genL2DataTasks.run();
         //mangoDBTask.run();
         //jetsStreamTask.run();
         //communicationCablesImproveTask.run();
+        importFot2MetersTask.run();
     }
 }

@@ -14,6 +14,7 @@ import java.util.List;
 @Log4j2
 @Component
 public class Utility {
+
     public List<List<String>> readCsv(String filePath) {
         List<List<String>> records = new ArrayList<>();
         try (BufferedReader br = new BufferedReader((new FileReader(filePath)))) {
@@ -26,6 +27,18 @@ public class Utility {
         } catch (IOException e) {
             log.error("readCsv ", e);
             return Collections.emptyList();
+        }
+    }
+
+    public void createCSVFile(List<String> list, String filePath, String fileName) throws IOException {
+        File file = new File(fileName);
+        try (BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file), "UTF-8"))) {
+            out.write('\ufeff');
+            for (String ele: list) {
+                out.write(ele);
+                out.newLine();
+            }
+            out.flush();
         }
     }
 
