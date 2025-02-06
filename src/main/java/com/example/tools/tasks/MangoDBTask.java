@@ -1,9 +1,8 @@
 package com.example.tools.tasks;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.*;
 import lombok.extern.log4j.Log4j2;
+import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,64 @@ public class MangoDBTask {
     String dbName = "juno";
 
     public void run() {
-        deleteCollections();
+        //deleteCollections();
+        //addColumns();
+        //updateNode();
+        deleteNode();
+    }
+
+    private void addColumns() {
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            MongoDatabase database = mongoClient.getDatabase("willow-pond");
+            MongoCollection<Document> collection = database.getCollection("fennel-kimwater");
+
+            // 新增多欄位
+            Document update = new Document("$set", new Document("name", "")
+                    .append("newMeterNo", "")
+                    .append("baseFlow", ""))
+                    ;
+
+            // 更新
+            collection.updateMany(new Document(), update);
+
+            log.info("所有文檔已新增欄位");
+        }
+    }
+
+    private void updateNode() {
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            MongoDatabase database = mongoClient.getDatabase("willow-pond");
+            MongoCollection<Document> collection = database.getCollection("fennel-kimwater");
+
+            // 更新 stat 欄位為 10 的所有文件，將其改為 0
+            Document filter = new Document("stat", 10);
+            Document update = new Document("$set", new Document("stat", 0));
+
+            // 執行更新
+            long updatedCount = collection.updateMany(filter, update).getModifiedCount();
+
+            log.info("Updated " + updatedCount + " documents.");
+        }
+    }
+
+    private void deleteNode() {
+        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017")) {
+            MongoDatabase database = mongoClient.getDatabase("willow-pond");
+            MongoCollection<Document> collection = database.getCollection("fennel-kimwater");
+
+            // 獲取所有文件的游標，限制數量並排序（如按 `_id` 排序）
+            MongoCursor<Document> cursor = collection.find()
+                    .sort(new Document("_id", 1)) // 按 `_id` 升序排序
+                    .skip(10) // 跳過前10筆文件
+                    .iterator();
+
+            // 刪除多餘的文件
+            while (cursor.hasNext()) {
+                Document doc = cursor.next();
+                collection.deleteOne(new Document("_id", doc.get("_id")));
+            }
+            log.info("已保留前10筆文件，其餘文件已刪除。");
+        }
     }
 
     private void deleteCollections() {

@@ -1,6 +1,6 @@
 package com.example.tools.schedule;
 
-import com.example.tools.tasks.ImportFot2MetersTask;
+import com.example.tools.tasks.*;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
 public class ScheduledTask {
     //@Autowired WindowsServiceTasks windowsServiceTasks;
 
-    //@Autowired AddDsmPositionTask addDsmPositionTask;
+    @Autowired
+    AddDsmPositionTask addDsmPositionTask;
 
     // @Autowired BctMappingAndAddressCorrespondTask bctMappingAndAddressCorrespondTask;
 
@@ -29,7 +30,8 @@ public class ScheduledTask {
 
     //@Autowired SendUdpPacketTask sendUdpPacketTask;
 
-    //@Autowired GenL2DataTasks genL2DataTasks;
+    @Autowired
+    GenL2DataTasks genL2DataTasks;
 
     //@Autowired CompressAndDeleteJsonFilesTask compressAndDeleteJsonFilesTask;
 
@@ -44,20 +46,29 @@ public class ScheduledTask {
     // @Autowired ChangeInterfaceIdToWaterIdTask changeInterfaceIdToWaterIdTask;
     //@Autowired CommunicationCablesImproveTask communicationCablesImproveTask;
 
+    //@Autowired DSMReportGeneratorTask dsmReportGeneratorTask;
+
+    //@Autowired ImportFot2MetersTask importFot2MetersTask;
+
     @Autowired
-    ImportFot2MetersTask importFot2MetersTask;
+    MangoDBTask mangoDBTask;
+
+    @Autowired
+    DrinkingStationReportTask drinkingStationReportTask;
 
     @Scheduled(initialDelay = 1000, fixedRate = 3153600000000L)
     //@Scheduled(cron = "0 0 * * * ?")
     public void tools() throws Exception {
         //changeInterfaceIdToWaterIdTask.run();
-        //ddDsmPositionTask.run();
+        //addDsmPositionTask.run();
         //sendUdpPacketTask.run();
         //compressAndDeleteJsonFilesTask.run();
-        // genL2DataTasks.run();
+        genL2DataTasks.run();
         //mangoDBTask.run();
         //jetsStreamTask.run();
         //communicationCablesImproveTask.run();
-        importFot2MetersTask.run();
+        //importFot2MetersTask.run();
+        //dsmReportGeneratorTask.run();
+        //drinkingStationReportTask.run();
     }
 }

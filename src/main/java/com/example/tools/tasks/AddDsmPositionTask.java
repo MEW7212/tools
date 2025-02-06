@@ -32,11 +32,11 @@ public class AddDsmPositionTask {
 
     private static Map<String, String> districtMap = new HashMap<String, String>() {
         {
-            put("東區", "0D51");
-            put("西區", "0D52");
-            put("南區", "0D53");
-            put("北區", "0D54");
-            put("陽明", "0D55");
+            put("東區分處", "0D51");
+            put("西區分處", "0D52");
+            put("南區分處", "0D53");
+            put("北區分處", "0D54");
+            put("陽明分處", "0D55");
         }
     };
 
