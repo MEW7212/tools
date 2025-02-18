@@ -85,6 +85,7 @@ public class MeterRead2TaipeiRepositoryI implements MeterRead2TaipeiRepository {
     @Override
     public List<DrinkingStationData> getDrinkingStationDataByInterfaceId(String interfaceId) {
 
+        /* 舊的撈法
         String sql = "DECLARE @interfaceId varchar(50)\n" +
                 "DECLARE @start NUMERIC(14,0)\n" +
                 "DECLARE @end NUMERIC(14,0)\n" +
@@ -139,6 +140,42 @@ public class MeterRead2TaipeiRepositoryI implements MeterRead2TaipeiRepository {
                 "\t,value_c_n AS '正向累積'\n" +
                 "\t,value_i_u AS '反向瞬間'\n" +
                 "\t,value_c_u AS '反向累積' \n" +
+                "FROM mtrread_l3 \n" +
+                "WHERE \n" +
+                "\t1=1\n" +
+                "\tand interface_id = @interfaceId  \n" +
+                "\tAND rcvtime >= @start\n" +
+                "ORDER BY rcvtime";
+
+         */
+
+        String sql = "DECLARE @interfaceId varchar(50)\n" +
+                "DECLARE @start NUMERIC(14,0)\n" +
+                "DECLARE @end NUMERIC(14,0)\n" +
+                "\n" +
+                "SET @interfaceId = ?\n" +
+                "SET @start = ?\n" +
+                "SET @end = ?\n" +
+                "\n" +
+                "SELECT \n" +
+                "\tvalue_i AS '瞬間值'\n" +
+                "\t,value_c AS '積算值'\n" +
+                "\t,bat_volt AS '電池電壓'\n" +
+                "\t,open_amt AS '開關次數'\n" +
+                "\t,rcvtime AS '紀錄時間'\n" +
+                "FROM dbo.mtrread_l2\n" +
+                "WHERE \n" +
+                "\t1=1\n" +
+                "   AND interface_id = @interfaceId  \n" +
+                "\tAND rcvtime < @end\n" +
+                "\tAND rcvtime >= @start\n" +
+                "UNION ALL\n" +
+                "SELECT \n" +
+                "\tvalue_i AS '瞬間值'\n" +
+                "\t,value_c AS '積算值'\n" +
+                "\t,bat_volt AS '電池電壓'\n" +
+                "\t,open_amt AS '開關次數'\n" +
+                "\t,rcvtime AS '紀錄時間'\n" +
                 "FROM mtrread_l3 \n" +
                 "WHERE \n" +
                 "\t1=1\n" +
@@ -217,6 +254,12 @@ public class MeterRead2TaipeiRepositoryI implements MeterRead2TaipeiRepository {
         @Override
         public DrinkingStationData mapRow(final ResultSet rs, final int rowNum) throws SQLException {
             final DrinkingStationData result = new DrinkingStationData();
+            result.setRcvtime(rs.getString("紀錄時間"));
+            result.setValueI(rs.getString("瞬間值"));
+            result.setValueC(rs.getString("積算值"));
+            result.setBatVolt(rs.getString("電池電壓"));
+            result.setOpenAmt(rs.getString("開關次數"));
+            /*
             result.setInterfaceId(rs.getString("介面編號"));
             result.setRcvtime(rs.getString("紀錄時間"));
             result.setValueI(rs.getString("瞬間流量"));
@@ -236,6 +279,7 @@ public class MeterRead2TaipeiRepositoryI implements MeterRead2TaipeiRepository {
             result.setValueCN(rs.getString("正向累積"));
             result.setValueIU(rs.getString("反向瞬間"));
             result.setValueCU(rs.getString("反向累積"));
+             */
             return result;
         }
     }

@@ -43,53 +43,37 @@ public class DrinkingStationReportTask {
 
             if (!drinkingStationDatas.isEmpty()) {
                 counter++;
-                log.info("{} : {} 筆資料", drinkingStationInfo.getInterfaceId(), drinkingStationDatas.size());
-                String nodeName = drinkingStationInfo.getSttnName();
+                log.info("{}-{} : {} 筆資料", drinkingStationInfo.getSttnName(), drinkingStationInfo.getInterfaceId(),
+                        drinkingStationDatas.size());
                 List<String> meterInfo = new ArrayList<>();
+                /* 舊的
                 meterInfo.add("介面編號,紀錄時間,瞬間流量,累積值,訊號源," +
                         "接收時間,電壓,訊號強度,漏水天數,負載天數," +
                         "靜止天數,反向天數,磁干擾天數,電力不足天數,開關次數," +
                         "正向瞬間,正向累積,反向瞬間,反向累積");
+                */
+                meterInfo.add("管理單位,監測站,傳訊點,瞬間值,積算值,電池電壓,開關次數,紀錄時間");
+                String unit = classifyRegion(drinkingStationInfo.getUnitId());
+                String nodeName = drinkingStationInfo.getSttnName();
+                String sqnc = "流量";
 
                 for (DrinkingStationData drinkingStationData : drinkingStationDatas) {
                     StringBuilder sb = new StringBuilder();
-                    sb.append(drinkingStationData.getInterfaceId());
+                    sb.append(unit);
                     sb.append(",");
-                    sb.append(drinkingStationData.getRcvtime());
+                    sb.append(nodeName);
+                    sb.append(",");
+                    sb.append(sqnc);
                     sb.append(",");
                     sb.append(drinkingStationData.getValueI());
                     sb.append(",");
                     sb.append(drinkingStationData.getValueC());
                     sb.append(",");
-                    sb.append(drinkingStationData.getInterfaceType());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getDvcSndTime());
-                    sb.append(",");
                     sb.append(drinkingStationData.getBatVolt());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getComStrg());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getLday());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getNday());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getOday());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getUday());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getHday());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getBday());
                     sb.append(",");
                     sb.append(drinkingStationData.getOpenAmt());
                     sb.append(",");
-                    sb.append(drinkingStationData.getValueIN());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getValueCN());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getValueIU());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getValueCU());
+                    sb.append(drinkingStationData.getRcvtime());
 
                     meterInfo.add(sb.toString());
                 }
@@ -99,5 +83,27 @@ public class DrinkingStationReportTask {
             }
         }
         log.info("{} 點位轉換完畢", counter);
+    }
+
+    private String classifyRegion(String unitId) {
+        String region = "";
+        switch (unitId) {
+            case "0D51":
+                region = "東區分處";
+                break;
+            case "0D52":
+                region = "西區分處";
+                break;
+            case "0D53":
+                region = "南區分處";
+                break;
+            case "0D54":
+                region = "北區分處";
+                break;
+            case "0D55":
+                region = "陽明分處";
+                break;
+        }
+        return region;
     }
 }

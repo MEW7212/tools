@@ -1,11 +1,20 @@
 package com.example.tools.tasks;
 
+import com.example.tools.model.Kimwater;
 import com.mongodb.client.*;
 import lombok.extern.log4j.Log4j2;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.bson.Document;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +33,8 @@ public class MangoDBTask {
         //deleteCollections();
         //addColumns();
         //updateNode();
-        deleteNode();
+        //deleteNode();
+        addNode();
     }
 
     private void addColumns() {
@@ -42,6 +52,49 @@ public class MangoDBTask {
             collection.updateMany(new Document(), update);
 
             log.info("所有文檔已新增欄位");
+        }
+    }
+
+    private void addNode() {
+        try (MongoClient mongoClient = MongoClients.create(mangoDBUri)) {
+            MongoDatabase database = mongoClient.getDatabase("willow-pond");
+            MongoCollection<Document> collection = database.getCollection("fennel-kimwater");
+
+            // 從金門施工 excel 抓取點位
+            List<Kimwater> list = getKimwaterDataFromExcel();
+
+            for (Kimwater kimwater: list) {
+                // 新增多欄位
+                Document newDocument = new Document()
+                        .append("waterNo", kimwater.getWaterNo())
+                        .append("meterNo", kimwater.getMeterNo())
+                        .append("area", "金門")
+                        .append("grp", "金門")
+                        .append("lat", 0.0)
+                        .append("lng", 0.0)
+                        .append("txsn", "")
+                        .append("remark", "")
+                        .append("workedAt", "")
+                        .append("updatedAt", "")
+                        .append("photo0", kimwater.getWaterNo() + "_0.jpg")
+                        .append("photo2", kimwater.getWaterNo() + "_1.jpg")
+                        .append("photo3", "")
+                        .append("photo4", "")
+                        .append("eid", "")
+                        .append("stat", 0)
+                        .append("address", kimwater.getAddress())
+                        .append("baseFlow", "")
+                        .append("name", kimwater.getName())
+                        .append("newMeterNo", "");
+
+                // 插入到 Collection
+                collection.insertOne(newDocument);
+            }
+
+            log.info("✅ 插入成功");
+
+        } catch (IOException e) {
+            log.error("MangoDBTask addNode error: ", e);
         }
     }
 
@@ -113,5 +166,43 @@ public class MangoDBTask {
         } catch (Exception e) {
             log.error("MangoDBTask error: ", e);
         }
+    }
+
+    private List<Kimwater> getKimwaterDataFromExcel() throws IOException {
+        POIFSFileSystem fileSystem = new POIFSFileSystem(new File("C:\\Users\\10043\\Desktop\\第01次派工-烈嶼鄉非智慧水表_1130109.xls"), true);
+        HSSFWorkbook workbook = new HSSFWorkbook(fileSystem);
+        Sheet sheet = workbook.getSheetAt(1);
+
+        List<Kimwater> list = new ArrayList<>();
+        int rowLen = sheet.getPhysicalNumberOfRows();
+        for (int i = 1; i < rowLen; i++) {
+            Row row = sheet.getRow(i);
+            Cell cWaterNo = row.getCell(1);
+            Cell cName = row.getCell(2);
+            Cell cAddress = row.getCell(3);
+            Cell cMeterNo = row.getCell(4);
+
+            Kimwater kimwater = new Kimwater();
+            if (cWaterNo != null) {
+                cWaterNo.setCellType(CellType.STRING);
+                kimwater.setWaterNo(cWaterNo.getStringCellValue());
+            }
+            if (cName != null) {
+                cName.setCellType(CellType.STRING);
+                kimwater.setName(cName.getStringCellValue());
+            }
+            if (cAddress != null) {
+                cAddress.setCellType(CellType.STRING);
+                kimwater.setAddress(cAddress.getStringCellValue());
+            }
+            if (cMeterNo != null) {
+                cMeterNo.setCellType(CellType.STRING);
+                kimwater.setMeterNo(cMeterNo.getStringCellValue());
+            }
+
+            list.add(kimwater);
+        }
+
+        return list;
     }
 }

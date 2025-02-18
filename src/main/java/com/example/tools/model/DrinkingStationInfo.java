@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class DrinkingStationInfo {
 
-    String interfaceId;
-    String sttnName;
+    private String unitId;
+    private String interfaceId;
+    private String sttnName;
 }

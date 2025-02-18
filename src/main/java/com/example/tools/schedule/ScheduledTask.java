@@ -63,12 +63,12 @@ public class ScheduledTask {
         //addDsmPositionTask.run();
         //sendUdpPacketTask.run();
         //compressAndDeleteJsonFilesTask.run();
-        genL2DataTasks.run();
+        //genL2DataTasks.run();
         //mangoDBTask.run();
         //jetsStreamTask.run();
         //communicationCablesImproveTask.run();
         //importFot2MetersTask.run();
         //dsmReportGeneratorTask.run();
-        //drinkingStationReportTask.run();
+        drinkingStationReportTask.run();
     }
 }

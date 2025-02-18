@@ -12,6 +12,7 @@ public class DrinkingInfoRowMapper implements RowMapper<DrinkingStationInfo> {
         DrinkingStationInfo obj = new DrinkingStationInfo();
         obj.setInterfaceId(rs.getString("interface_id"));
         obj.setSttnName(rs.getString("sttn_name"));
+        obj.setUnitId(rs.getString("unit_id"));
 
         return obj;
     }

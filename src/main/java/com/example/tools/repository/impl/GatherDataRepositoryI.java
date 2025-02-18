@@ -40,6 +40,7 @@ public class GatherDataRepositoryI implements GatherDataRepository {
         String sqlStatement = "SELECT \n" +
                 "\tb.interface_id\n" +
                 "\t, a.sttn_name \n" +
+                "\t, a.unit_id \n" +
                 "FROM sttnloc a\n" +
                 "\tINNER JOIN mntrrel2 b \n" +
                 "\t\tON a.sttn_id = b.sttn_id\n" +
