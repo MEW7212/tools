@@ -58,24 +58,35 @@ public class DrinkingStationReportTask {
                 String sqnc = "流量";
 
                 for (DrinkingStationData drinkingStationData : drinkingStationDatas) {
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(unit);
-                    sb.append(",");
-                    sb.append(nodeName);
-                    sb.append(",");
-                    sb.append(sqnc);
-                    sb.append(",");
-                    sb.append(drinkingStationData.getValueI());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getValueC());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getBatVolt());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getOpenAmt());
-                    sb.append(",");
-                    sb.append(drinkingStationData.getRcvtime());
+                    // 1140221000000 -> 114/02/21 00:00:00
+                    try {
+                        String date = drinkingStationData.getRcvtime().substring(0, 3)
+                                + "/" + drinkingStationData.getRcvtime().substring(3, 5)
+                                + "/" + drinkingStationData.getRcvtime().substring(5, 7)
+                                + " " + drinkingStationData.getRcvtime().substring(7, 9)
+                                + ":" + drinkingStationData.getRcvtime().substring(9, 11)
+                                + ":" + drinkingStationData.getRcvtime().substring(11, 13);
+                        StringBuilder sb = new StringBuilder();
+                        sb.append(unit);
+                        sb.append(",");
+                        sb.append(nodeName);
+                        sb.append(",");
+                        sb.append(sqnc);
+                        sb.append(",");
+                        sb.append(drinkingStationData.getValueI());
+                        sb.append(",");
+                        sb.append(drinkingStationData.getValueC());
+                        sb.append(",");
+                        sb.append(drinkingStationData.getBatVolt());
+                        sb.append(",");
+                        sb.append(drinkingStationData.getOpenAmt());
+                        sb.append(",");
+                        sb.append(date);
 
-                    meterInfo.add(sb.toString());
+                        meterInfo.add(sb.toString());
+                    } catch (Exception e) {
+                        log.error("transfer data error: ", e);
+                    }
                 }
                 utility.createCSVFile(meterInfo, "", nodeName + ".csv");
             } else {
