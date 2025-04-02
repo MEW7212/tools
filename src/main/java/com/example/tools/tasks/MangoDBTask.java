@@ -76,8 +76,8 @@ public class MangoDBTask {
                         .append("remark", "")
                         .append("workedAt", "")
                         .append("updatedAt", "")
-                        .append("photo0", kimwater.getWaterNo() + "_0.jpg")
-                        .append("photo2", kimwater.getWaterNo() + "_1.jpg")
+                        .append("photo0", "")
+                        .append("photo2", "")
                         .append("photo3", "")
                         .append("photo4", "")
                         .append("eid", "")
@@ -169,9 +169,9 @@ public class MangoDBTask {
     }
 
     private List<Kimwater> getKimwaterDataFromExcel() throws IOException {
-        POIFSFileSystem fileSystem = new POIFSFileSystem(new File("C:\\Users\\10043\\Desktop\\第01次派工-烈嶼鄉非智慧水表_1130109.xls"), true);
+        POIFSFileSystem fileSystem = new POIFSFileSystem(new File("D:\\apps\\tools\\ref\\kimwater\\第02批次派工_機關_1140317-add.XLS"), true);
         HSSFWorkbook workbook = new HSSFWorkbook(fileSystem);
-        Sheet sheet = workbook.getSheetAt(1);
+        Sheet sheet = workbook.getSheetAt(0);
 
         List<Kimwater> list = new ArrayList<>();
         int rowLen = sheet.getPhysicalNumberOfRows();
