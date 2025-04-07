@@ -56,11 +56,15 @@ public class ScheduledTask {
     @Autowired
     DrinkingStationReportTask drinkingStationReportTask;
 
+    @Autowired
+    AddDrinkingStationTask addDrinkingStationTask;
+
     @Scheduled(initialDelay = 1000, fixedRate = 3153600000000L)
     //@Scheduled(cron = "0 0 * * * ?")
     public void tools() throws Exception {
         //changeInterfaceIdToWaterIdTask.run();
         //addDsmPositionTask.run();
+        addDrinkingStationTask.run();
         //sendUdpPacketTask.run();
         //compressAndDeleteJsonFilesTask.run();
         //genL2DataTasks.run();
@@ -69,6 +73,6 @@ public class ScheduledTask {
         //communicationCablesImproveTask.run();
         //importFot2MetersTask.run();
         //dsmReportGeneratorTask.run();
-        drinkingStationReportTask.run();
+        //drinkingStationReportTask.run();
     }
 }

@@ -10,6 +10,7 @@ public class DsmInfo implements Serializable {
     private static final long serialVersionUID = 6805287723870418615L;
     private String no;
     private String unitId;
+    private String sttnId;
     private String name;
     private String address;
     private String brand; // 廠牌

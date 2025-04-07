@@ -46,4 +46,38 @@ public class DsmInsertServiceI implements DsmInsertService {
 
         log.info("no.{} {} ok.", dsmInfo.getNo(), dsmInfo.getInterfaceId());
     }
+
+    @Override
+    public void insertDrinkingStation(DsmInfo dsmInfo){
+        int cnt = 0;
+        cnt = dsmInsertRepository.selectRel1c(dsmInfo.getSttnId());
+        if (cnt == 0) {
+            dsmInsertRepository.insertRel1c(dsmInfo);
+        } else {
+            log.info("{} has rel1c: {}", dsmInfo.getInterfaceId(), cnt);
+        }
+
+        cnt = dsmInsertRepository.selectDrinkingStationRel2(dsmInfo.getSttnId());
+        if (cnt == 0) {
+            dsmInsertRepository.insertDrinkingStationRel2(dsmInfo);
+        } else {
+            log.info("{} has rel2: {}", dsmInfo.getInterfaceId(), cnt);
+        }
+
+        cnt = dsmInsertRepository.selectMtrloc(dsmInfo.getInterfaceId());
+        if (cnt == 0) {
+            dsmInsertRepository.insertDrinkingStationMtrloc(dsmInfo);
+        } else {
+            log.info("{} has mtrloc: {}", dsmInfo.getInterfaceId(), cnt);
+        }
+
+        cnt = dsmInsertRepository.selectSttnloc(dsmInfo.getInterfaceId());
+        if (cnt == 0) {
+            dsmInsertRepository.insertSttnlocDrinkingStation(dsmInfo);
+        } else {
+            log.info("{} has sttnloc: {}", dsmInfo.getInterfaceId(), cnt);
+        }
+
+        log.info("no.{} {} ok.", dsmInfo.getNo(), dsmInfo.getSttnId());
+    }
 }

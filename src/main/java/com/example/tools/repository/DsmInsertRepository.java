@@ -19,4 +19,16 @@ public interface DsmInsertRepository {
     int selectSttnloc(String interfaceId);
 
     int insertSttnloc(DsmInfo dsmInfo);
+
+    int selectRel1c(String sttnId);
+
+    int insertRel1c(DsmInfo dsmInfo);
+
+    int selectDrinkingStationRel2(String sttnId);
+
+    int insertDrinkingStationRel2(DsmInfo dsmInfo);
+
+    int insertDrinkingStationMtrloc(DsmInfo dsmInfo);
+
+    int insertSttnlocDrinkingStation(DsmInfo dsmInfo);
 }

@@ -192,4 +192,102 @@ public class DsmInsertRepositoryI implements DsmInsertRepository {
             return 0;
         }
     }
+
+    @Override
+    public int selectRel1c(String sttnId) {
+        String sql = "SELECT COUNT(*) FROM mntrrel1_c WHERE sttn_id = ?";
+        try {
+            return twcwmJdbcTemplate.queryForObject(sql, Integer.class, sttnId);
+        } catch (DataAccessException e) {
+            log.error("DsmInsertRepositoryI selectRel1c error: ", e);
+            return -1;
+        }
+    }
+
+    @Override
+    public int insertRel1c(DsmInfo dsmInfo) {
+        String sql = "INSERT INTO \"mntrrel1_c\" (\"unit_id\", \"sttn_id\") VALUES (?, ?);";
+        try {
+            return twcwmJdbcTemplate.update(sql,
+                    dsmInfo.getUnitId(),
+                    dsmInfo.getSttnId()
+            );
+        } catch (DataAccessException e) {
+            log.error("DsmInsertRepositoryI insertRel1c: ", e);
+            return 0;
+        }
+    }
+
+    @Override
+    public int selectDrinkingStationRel2(String sttnId) {
+        String sql = "SELECT COUNT(*) FROM mntrrel2 WHERE sttn_id = ?";
+        try {
+            return twcwmJdbcTemplate.queryForObject(sql, Integer.class, sttnId);
+        } catch (DataAccessException e) {
+            log.error("DsmInsertRepositoryI selectDrinkingStationRel2 error: ", e);
+            return -1;
+        }
+    }
+
+    @Override
+    public int insertDrinkingStationRel2(DsmInfo dsmInfo) {
+        String sql = "INSERT INTO \"mntrrel2\" (\"sttn_id\", \"interface_id\", \"sqnc\") VALUES (?, " +
+                "?, '1');\n";
+
+        try {
+            return twcwmJdbcTemplate.update(sql,
+                    dsmInfo.getSttnId(),
+                    dsmInfo.getInterfaceId()
+            );
+        } catch (DataAccessException e) {
+            log.error("DsmInsertRepositoryI insertDrinkingStationRel2 error: ", e);
+            return 0;
+        }
+    }
+
+    @Override
+    public int insertDrinkingStationMtrloc(DsmInfo dsmInfo) {
+        String sql = "INSERT INTO \"mtrloc\" (\"interface_id\", \"sqnc\", \"ctgr\", \"unit_id\", \"mtrname\", " +
+                "\"locdesc\", \"lat\", \"lng\", \"brand\", \"model\", \"obj_num\", \"bore\", \"flwtype\", \"sim\", " +
+                "\"isdel\", \"lst_sqnc\") VALUES (?, '1', 'g', ?, '流量', ?, ?, ?, ?, ?, ?, ?, 'e', ?, 'N', 1);\n";
+
+        try {
+            return twcwmJdbcTemplate.update(sql,
+                    dsmInfo.getInterfaceId(),
+                    dsmInfo.getUnitId(),
+                    dsmInfo.getAddress(),
+                    dsmInfo.getLat(),
+                    dsmInfo.getLng(),
+                    dsmInfo.getBrand(),
+                    dsmInfo.getModel(),
+                    dsmInfo.getObjNum(),
+                    dsmInfo.getBore(),
+                    dsmInfo.getSim()
+            );
+        } catch (DataAccessException e) {
+            log.error("DsmInsertRepositoryI insertDrinkingStationMtrloc error: ", e);
+            return 0;
+        }
+    }
+
+    @Override
+    public int insertSttnlocDrinkingStation(DsmInfo dsmInfo) {
+        // sttn_prop 代表 DSM, 0:RTU 1:DSM 2:水質 3:閥栓 (應該吧?)
+        String sql = "INSERT INTO \"sttnloc\" (\"sttn_id\", \"sttn_name\", \"unit_id\", \"addr\", \"lat\", \"lng\", " +
+                "\"isdel\",\"sttn_prop\") VALUES (?, ?, ?, ?, ?, ?,'N', '1');\n";
+
+        try {
+            return twcwmJdbcTemplate.update(sql,
+                    dsmInfo.getSttnId(),
+                    dsmInfo.getName(),
+                    dsmInfo.getUnitId(),
+                    dsmInfo.getAddress(),
+                    dsmInfo.getLat(),
+                    dsmInfo.getLng()
+            );
+        } catch (DataAccessException e) {
+            log.error("DsmInsertRepositoryI insertSttnloc: ", e);
+            return 0;
+        }
+    }
 }
