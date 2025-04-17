@@ -273,8 +273,9 @@ public class DsmInsertRepositoryI implements DsmInsertRepository {
     @Override
     public int insertSttnlocDrinkingStation(DsmInfo dsmInfo) {
         // sttn_prop 代表 DSM, 0:RTU 1:DSM 2:水質 3:閥栓 (應該吧?)
+        // iscust 代表是否為用戶, Y:是 N:否，直飲台都是算用戶表
         String sql = "INSERT INTO \"sttnloc\" (\"sttn_id\", \"sttn_name\", \"unit_id\", \"addr\", \"lat\", \"lng\", " +
-                "\"isdel\",\"sttn_prop\") VALUES (?, ?, ?, ?, ?, ?,'N', '1');\n";
+                "\"isdel\", \"iscust\", \"sttn_prop\") VALUES (?, ?, ?, ?, ?, ?,'N','Y','1');\n";
 
         try {
             return twcwmJdbcTemplate.update(sql,
